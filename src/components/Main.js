@@ -1,4 +1,4 @@
-export const Main = ({handleEditProfileClick, handleAddPlaceClick, handleEditAvatarClick, userName, userDescription, userAvatar}) => {
+const Main = ({handleEditProfileClick, handleAddPlaceClick, handleEditAvatarClick, userName, userDescription, userAvatar}) => {
 
   return (
     <main className="main">
@@ -14,3 +14,5 @@ export const Main = ({handleEditProfileClick, handleAddPlaceClick, handleEditAva
   </main>
   )
 }
+
+export default Main
