@@ -1,6 +1,6 @@
 import { Children } from "react" //????
 
-export const PopupWithForm = ({title, name, isOpen, children, onClose}) => {
+const PopupWithForm = ({title, name, isOpen, children, onClose}) => {
   return (
     <section className={isOpen ? "popup popup_type_input popup_opened" : "popup popup_type_input"} id={name}>
     <div className="popup__container popup__container_type_input">
@@ -14,3 +14,5 @@ export const PopupWithForm = ({title, name, isOpen, children, onClose}) => {
   </section>
   )
 }
+
+export default PopupWithForm

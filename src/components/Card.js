@@ -1,4 +1,4 @@
-export const Card = ({card, onCardClick}) => {
+const Card = ({card, onCardClick}) => {
 
 //? почему тут нельзя записать стрелочную функцию
 //? потеря контекста
@@ -21,3 +21,5 @@ export const Card = ({card, onCardClick}) => {
   </li>
   )
 }
+
+export default Card
