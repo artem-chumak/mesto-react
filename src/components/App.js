@@ -1,20 +1,63 @@
 // todo 1. Можно убрать лишнюю обёртку root и перенести стили в page.css
+// todo 2. Почистить App.js от старого кода, который замючен
+// todo 3. Почистить variables.js
 
 import {useEffect, useState} from 'react';
+import { api } from '../utils/Api';
 import { Header } from './Header';
 import { Main } from './Main';
 import { Footer } from './Footer';
+import { PopupWithForm } from './PopupWithForm';
 import '../index.css';
 
 function App() {
+
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+
+  const onEditProfile = () => {setIsEditProfilePopupOpen(true)};
+  const onAddPlace = () => {setIsAddPlacePopupOpen(true)};
+  const onEditAvatar = () => {setIsEditAvatarPopupOpen(true)}
+
+  const closeAllPopups = () => {
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+    setIsEditAvatarPopupOpen(false);
+  }
+  
   return (
   <div className="root">
     <div className="page">
       <Header />
-      <Main />
+      <Main
+        handleEditProfileClick={onEditProfile}
+        handleAddPlaceClick={onAddPlace}
+        handleEditAvatarClick={onEditAvatar}
+      />
       <Footer />
+
+      <PopupWithForm 
+        name={"edit-profile"}
+        title={"Редактировать профиль"}
+        isOpen={isEditProfilePopupOpen}
+        onClose={closeAllPopups}
+      />
+      <PopupWithForm 
+        name={"add-place"}
+        title={"Новое место"}
+        isOpen={isAddPlacePopupOpen}
+        onClose={closeAllPopups}
+      />
+      <PopupWithForm 
+        name={"edit-avatar"}
+        title={"Обновить аватар"}
+        isOpen={isEditAvatarPopupOpen}
+        onClose={closeAllPopups}
+      />
     </div>
-    <section className="popup popup_type_input" id="delete-conformation">
+
+    {/* <section className="popup popup_type_input" id="delete-conformation">
       <div className="popup__container popup__container_type_input">
         <h2 className="popup__title">Вы уверены?</h2>
         <button className="button popup__exit-button" type="button" aria-label="Закрыть"></button>
@@ -83,7 +126,7 @@ function App() {
           </div>
         </div>
       </li>
-    </template>
+    </template> */}
   </div>
   );
 }

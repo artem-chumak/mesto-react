@@ -1,17 +1,4 @@
-export const Main = () => {
-
-  const handleEditAvatarClick = () => {
-    document.querySelector('#edit-avatar').classList.add('popup_opened')
-  }
-
-  const handleEditProfileClick = () => {
-    document.querySelector('#edit-profile').classList.add('popup_opened')
-  }
-
-  const handleAddPlaceClick = () => {
-    document.querySelector('#add-place').classList.add('popup_opened')
-
-  }
+export const Main = ({handleEditProfileClick, handleAddPlaceClick, handleEditAvatarClick}) => {
 
   return (
     <main className="main">
