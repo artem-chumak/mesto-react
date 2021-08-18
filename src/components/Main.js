@@ -11,10 +11,6 @@ export const Main = ({handleEditProfileClick, handleAddPlaceClick, handleEditAva
       </div>
       <button className="button profile__add-button" aria-label="Добавить" type="button" onClick={handleAddPlaceClick}></button>
     </section>
-    <section className="section elements">
-      <ul className="elements__list">
-      </ul>
-    </section>
   </main>
   )
 }

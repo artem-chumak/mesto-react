@@ -1,6 +1,8 @@
 // todo 1. Можно убрать лишнюю обёртку root и перенести стили в page.css
 // todo 2. Почистить App.js от старого кода, который замючен
 // todo 3. Почистить variables.js
+// todo 4. Узнать возможность сделать один useEffect на получение двух массивов данных
+// todo 5. Добавить спинер
 
 import {useEffect, useState} from 'react';
 import { api } from '../utils/Api';
@@ -8,6 +10,7 @@ import { Header } from './Header';
 import { Main } from './Main';
 import { Footer } from './Footer';
 import { PopupWithForm } from './PopupWithForm';
+import { Card } from './Card';
 import '../index.css';
 
 function App() {
@@ -15,6 +18,7 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [cards, setCards] = useState([]);
 
   const onEditProfile = () => {setIsEditProfilePopupOpen(true)};
   const onAddPlace = () => {setIsAddPlacePopupOpen(true)};
@@ -25,16 +29,42 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
   }
+
+  useEffect (() => {
+    api.getCards().then((res) => {
+      console.log(res);  //! delete
+      const arr = res.map((item) => {
+        return {
+          likes: item.likes.length,
+          title: item.name,
+          link: item.link,
+          id: item._id
+        }
+      })
+      console.log(arr); //! delete
+      setCards(arr);
+    })
+  }, [])
   
   return (
   <div className="root">
     <div className="page">
       <Header />
       <Main
+        // userName={}
+        // userDescription={}
+        // userAvatar={}
         handleEditProfileClick={onEditProfile}
         handleAddPlaceClick={onAddPlace}
         handleEditAvatarClick={onEditAvatar}
       />
+
+      <section className="section elements">
+        <ul className="elements__list">
+          {cards.map((card) => { return <Card key={card.id} {...card} />})}
+        </ul>
+      </section>
+
       <Footer />
 
       <PopupWithForm 
