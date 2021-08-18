@@ -3,6 +3,8 @@
 // todo 3. Почистить variables.js
 // todo 4. Узнать возможность сделать один useEffect на получение двух массивов данных
 // todo 5. Добавить спинер
+// todo 6. Передавать всю клиентскую информацию одним объектом, а не строками
+// todo 7. Поменять фавикон
 
 import {useEffect, useState} from 'react';
 import { api } from '../utils/Api';
@@ -19,6 +21,10 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [cards, setCards] = useState([]);
+  const [userName, setUserName] = useState('');
+  const [userDescription, setUserDescription] = useState('');
+  const [userAvatar, setUserAvatar] = useState('')
+
 
   const onEditProfile = () => {setIsEditProfilePopupOpen(true)};
   const onAddPlace = () => {setIsAddPlacePopupOpen(true)};
@@ -30,9 +36,9 @@ function App() {
     setIsEditAvatarPopupOpen(false);
   }
 
+//* CARDS
   useEffect (() => {
     api.getCards().then((res) => {
-      console.log(res);  //! delete
       const arr = res.map((item) => {
         return {
           likes: item.likes.length,
@@ -41,19 +47,27 @@ function App() {
           id: item._id
         }
       })
-      console.log(arr); //! delete
       setCards(arr);
     })
   }, [])
-  
+
+//* USER INFO
+  useEffect(() => {
+    api.getUserInfo().then((res) => {
+      setUserName(res.name);
+      setUserDescription(res.about);
+      setUserAvatar(res.avatar);
+    })
+  }, [])
+
   return (
   <div className="root">
     <div className="page">
       <Header />
       <Main
-        // userName={}
-        // userDescription={}
-        // userAvatar={}
+        userName={userName}
+        userDescription={userDescription}
+        userAvatar={userAvatar}
         handleEditProfileClick={onEditProfile}
         handleAddPlaceClick={onAddPlace}
         handleEditAvatarClick={onEditAvatar}
