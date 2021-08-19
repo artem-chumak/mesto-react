@@ -1,11 +1,9 @@
 // todo 1. Можно убрать лишнюю обёртку root и перенести стили в page.css или на root в index.html
-// todo 2. Почистить App.js от старого кода, который замючен
-// todo 3. Почистить variables.js
-// todo 4. Узнать возможность сделать один useEffect на получение двух массивов данных
-// todo 5. Добавить спинер
-// todo 6. Передавать всю клиентскую информацию одним объектом, а не строками
-// todo 7. Поменять фавикон
-// todo 8. Узнать про стрелочную функцию в Card.js
+// todo 2. Почистить variables.js
+// todo 3. Узнать возможность сделать один useEffect на получение двух массивов данных
+// todo 4. Добавить спинер
+// todo 5. Передавать всю клиентскую информацию одним объектом, а не строками
+// todo 6. Поменять фавикон
 
 import {useEffect, useState} from 'react';
 import { api } from '../utils/Api';
@@ -18,15 +16,18 @@ import Card from './Card';
 import '../index.css';
 
 function App() {
-
+// open popup
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+// cards
   const [cards, setCards] = useState([]);
+// user info
   const [userName, setUserName] = useState('');
   const [userDescription, setUserDescription] = useState('');
   const [userAvatar, setUserAvatar] = useState('')
-  const [selectedCard, setSelectedCard] = useState(false)
+// card clicked
+  const [selectedCard, setSelectedCard] = useState({title:'', link:''})
 
   const handleCardClick = (card) => {
     setSelectedCard(card)
@@ -40,7 +41,7 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
-    setSelectedCard(false);
+    setSelectedCard({title:'', link:''});
   }
 
 //* CARDS
@@ -88,21 +89,34 @@ function App() {
       <PopupWithForm 
         name={"edit-profile"}
         title={"Редактировать профиль"}
+        buttonText={"Сохранить"}
         isOpen={isEditProfilePopupOpen}
-        onClose={closeAllPopups}
-      />
+        onClose={closeAllPopups}>
+          <input className="popup__input" id="name" type="text" placeholder="Имя" name="name" required minLength="2" maxLength="40" />
+          <span className="popup__input-error" id="name-error">Mistake</span>
+          <input className="popup__input" id="occupation" type="text" placeholder="Род занятий" name="about" required minLength="2" maxLength="200" />
+          <span className="popup__input-error" id="occupation-error"></span>
+        </PopupWithForm>
       <PopupWithForm 
         name={"add-place"}
         title={"Новое место"}
+        buttonText={"Сохранить"}
         isOpen={isAddPlacePopupOpen}
-        onClose={closeAllPopups}
-      />
+        onClose={closeAllPopups}>
+          <input className="popup__input" id="title" type="text" placeholder="Название" name="name" required minLength="2" maxLength="30" />
+          <span className="popup__input-error" id="title-error">Mistake</span>
+          <input className="popup__input" id="link" type="url" placeholder="Ссылка на картинку" name="link" required />
+          <span className="popup__input-error" id="link-error"></span>
+      </PopupWithForm>
       <PopupWithForm 
         name={"edit-avatar"}
         title={"Обновить аватар"}
+        buttonText={"Сохранить"}
         isOpen={isEditAvatarPopupOpen}
-        onClose={closeAllPopups}
-      />
+        onClose={closeAllPopups}>
+          <input className="popup__input" id="avatar" type="url" placeholder="Ссылка на картинку" name="avatar" required />
+          <span className="popup__input-error" id="avatar-error"></span>
+      </PopupWithForm>
       <ImagePopup
         card={selectedCard}
         onClose={closeAllPopups}

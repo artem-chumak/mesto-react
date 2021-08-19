@@ -1,6 +1,6 @@
 const ImagePopup = ({card, onClose}) => {
   return (
-    <section className={card ? "popup popup_type_image popup_opened" : "popup popup_type_image"} id="image-popup">
+    <section className={card.link ? "popup popup_type_image popup_opened" : "popup popup_type_image"} id="image-popup">
     <div className="popup__container popup__container_type_image">
       <button className="button popup__exit-button" onClick={onClose} type="button" aria-label="Закрыть"></button>
       <img className="popup__image" src={card.link} alt="Фото места" />
