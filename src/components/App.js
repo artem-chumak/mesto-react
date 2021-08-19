@@ -5,14 +5,12 @@
 // todo 5. Передавать всю клиентскую информацию одним объектом, а не строками
 // todo 6. Поменять фавикон
 
-import {useEffect, useState} from 'react';
-import { api } from '../utils/Api';
+import { useState } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup'
-import Card from './Card';
 import '../index.css';
 
 function App() {
@@ -20,13 +18,8 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-// cards
-  const [cards, setCards] = useState([]);
-// user info
-  const [userName, setUserName] = useState('');
-  const [userDescription, setUserDescription] = useState('');
-  const [userAvatar, setUserAvatar] = useState('')
-// card clicked
+
+  // card clicked
   const [selectedCard, setSelectedCard] = useState({title:'', link:''})
 
   const handleCardClick = (card) => {
@@ -44,47 +37,16 @@ function App() {
     setSelectedCard({title:'', link:''});
   }
 
-//* CARDS
-  useEffect (() => {
-    api.getCards().then((res) => {
-      const arr = res.map((item) => {
-        return {
-          likes: item.likes.length,
-          title: item.name,
-          link: item.link,
-          id: item._id
-        }
-      })
-      setCards(arr);
-    })
-  }, [])
-
-//* USER INFO
-  useEffect(() => {
-    api.getUserInfo().then((res) => {
-      setUserName(res.name);
-      setUserDescription(res.about);
-      setUserAvatar(res.avatar);
-    })
-  }, [])
-
   return (
   <div className="root">
     <div className="page">
       <Header />
       <Main
-        userName={userName}
-        userDescription={userDescription}
-        userAvatar={userAvatar}
         handleEditProfileClick={onEditProfile}
         handleAddPlaceClick={onAddPlace}
         handleEditAvatarClick={onEditAvatar}
+        handleCardClick={handleCardClick}
       />
-      <section className="section elements">
-        <ul className="elements__list">
-          {cards.map((card) => { return <Card key={card.id} card={card} onCardClick={handleCardClick} />})}
-        </ul>
-      </section>
       <Footer />
       <PopupWithForm 
         name={"edit-profile"}

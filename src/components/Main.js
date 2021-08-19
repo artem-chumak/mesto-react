@@ -1,4 +1,39 @@
-const Main = ({handleEditProfileClick, handleAddPlaceClick, handleEditAvatarClick, userName, userDescription, userAvatar}) => {
+import { useState, useEffect } from 'react';
+import { api } from '../utils/Api';
+import Card from './Card';
+
+const Main = ({ handleEditProfileClick, handleAddPlaceClick, handleEditAvatarClick, handleCardClick }) => {
+
+// cards
+  const [cards, setCards] = useState([]);
+// user info
+  const [userName, setUserName] = useState('');
+  const [userDescription, setUserDescription] = useState('');
+  const [userAvatar, setUserAvatar] = useState('')
+
+// CARDS
+useEffect (() => {
+  api.getCards().then((res) => {
+    const arr = res.map((item) => {
+      return {
+        likes: item.likes.length,
+        title: item.name,
+        link: item.link,
+        id: item._id
+      }
+    })
+    setCards(arr);
+  })
+}, [])
+
+// USER INFO
+useEffect(() => {
+  api.getUserInfo().then((res) => {
+    setUserName(res.name);
+    setUserDescription(res.about);
+    setUserAvatar(res.avatar);
+  })
+}, [])
 
   return (
     <main className="main">
@@ -11,6 +46,11 @@ const Main = ({handleEditProfileClick, handleAddPlaceClick, handleEditAvatarClic
       </div>
       <button className="button profile__add-button" aria-label="Добавить" type="button" onClick={handleAddPlaceClick}></button>
     </section>
+    <section className="section elements">
+        <ul className="elements__list">
+          {cards.map((card) => { return <Card key={card.id} card={card} onCardClick={handleCardClick} />})}
+        </ul>
+      </section>
   </main>
   )
 }
