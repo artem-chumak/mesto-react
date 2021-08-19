@@ -1,6 +1,5 @@
 const Card = ({card, onCardClick}) => {
 
-//* Получилось. Наверное миспринтинг был. Поэтому стрелочная не работала
   const handleClick = () => {
     onCardClick(card);
   }

@@ -23,6 +23,8 @@ useEffect (() => {
       }
     })
     setCards(arr);
+  }).catch((err) => {
+    console.log(err)
   })
 }, [])
 
@@ -32,6 +34,8 @@ useEffect(() => {
     setUserName(res.name);
     setUserDescription(res.about);
     setUserAvatar(res.avatar);
+  }).catch((err) => {
+    console.log(err)
   })
 }, [])
 

@@ -4,8 +4,9 @@
 // todo 4. Добавить спинер
 // todo 5. Передавать всю клиентскую информацию одним объектом, а не строками
 // todo 6. Поменять фавикон
+// todo 7. Понять в какой момент вешается обработчик на Escap. Не до конца понимаю пока
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -14,28 +15,39 @@ import ImagePopup from './ImagePopup'
 import '../index.css';
 
 function App() {
-// open popup
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
 
-  // card clicked
+// card clicked
   const [selectedCard, setSelectedCard] = useState({title:'', link:''})
 
   const handleCardClick = (card) => {
     setSelectedCard(card)
   }
 
+// open popup
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+
   const onEditProfile = () => {setIsEditProfilePopupOpen(true)};
   const onAddPlace = () => {setIsAddPlacePopupOpen(true)};
   const onEditAvatar = () => {setIsEditAvatarPopupOpen(true)}
-
+// close popup
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setSelectedCard({title:'', link:''});
   }
+
+  useEffect(() => {
+    const closeByEscape = (evt) => {
+      if (evt.key === 'Escape') {
+        closeAllPopups();
+      }
+    }
+    document.addEventListener('keydown', closeByEscape)
+    return () => document.removeEventListener('keydown', closeByEscape)
+}, [])
 
   return (
   <div className="root">
