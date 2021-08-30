@@ -2,22 +2,37 @@
 // todo 2. Почистить variables.js
 // todo 3. Узнать возможность сделать один useEffect на получение двух массивов данных
 // todo 4. Добавить спинер
-// todo 5. Передавать всю клиентскую информацию одним объектом, а не строками
 // todo 6. Поменять фавикон
 // todo 7. Понять в какой момент вешается обработчик на Escap. Не до конца понимаю пока
 
 import { useState, useEffect } from 'react';
+import { api } from '../utils/Api';
+import { CurrentUserContext } from '../contexts/CurrentUserContext'
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
-import ImagePopup from './ImagePopup'
+import EditProfilePopup from './EditProfilePopup';
+import ImagePopup from './ImagePopup';
 import '../index.css';
 
 function App() {
 
+//! 
+const [currentUser, setcurrentUser] = useState({});
+
+useEffect(() => {
+  api.getUserInfo().then((res) => {
+    setcurrentUser(res);
+  }).catch((err) => {
+    console.log(err)
+  })
+}, [])
+
+//!
+
 // card clicked
-  const [selectedCard, setSelectedCard] = useState({title:'', link:''})
+  const [selectedCard, setSelectedCard] = useState({name:'', link:''})
 
   const handleCardClick = (card) => {
     setSelectedCard(card)
@@ -36,7 +51,7 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
-    setSelectedCard({title:'', link:''});
+    setSelectedCard({name:'', link:''});
   }
 
   useEffect(() => {
@@ -50,53 +65,45 @@ function App() {
 }, [])
 
   return (
-  <div className="root">
-    <div className="page">
-      <Header />
-      <Main
-        handleEditProfileClick={onEditProfile}
-        handleAddPlaceClick={onAddPlace}
-        handleEditAvatarClick={onEditAvatar}
-        handleCardClick={handleCardClick}
-      />
-      <Footer />
-      <PopupWithForm 
-        name={"edit-profile"}
-        title={"Редактировать профиль"}
-        buttonText={"Сохранить"}
-        isOpen={isEditProfilePopupOpen}
-        onClose={closeAllPopups}>
-          <input className="popup__input" id="name" type="text" placeholder="Имя" name="name" required minLength="2" maxLength="40" />
-          <span className="popup__input-error" id="name-error">Mistake</span>
-          <input className="popup__input" id="occupation" type="text" placeholder="Род занятий" name="about" required minLength="2" maxLength="200" />
-          <span className="popup__input-error" id="occupation-error"></span>
+  <CurrentUserContext.Provider value={currentUser}>
+    <div className="root">
+      <div className="page">
+        <Header />
+        <Main
+          handleEditProfileClick={onEditProfile}
+          handleAddPlaceClick={onAddPlace}
+          handleEditAvatarClick={onEditAvatar}
+          handleCardClick={handleCardClick}
+        />
+        <Footer />
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
+        <PopupWithForm 
+          name={"add-place"}
+          title={"Новое место"}
+          buttonText={"Сохранить"}
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}>
+            <input className="popup__input" id="title" type="text" placeholder="Название" name="name" required minLength="2" maxLength="30" />
+            <span className="popup__input-error" id="title-error">Mistake</span>
+            <input className="popup__input" id="link" type="url" placeholder="Ссылка на картинку" name="link" required />
+            <span className="popup__input-error" id="link-error"></span>
         </PopupWithForm>
-      <PopupWithForm 
-        name={"add-place"}
-        title={"Новое место"}
-        buttonText={"Сохранить"}
-        isOpen={isAddPlacePopupOpen}
-        onClose={closeAllPopups}>
-          <input className="popup__input" id="title" type="text" placeholder="Название" name="name" required minLength="2" maxLength="30" />
-          <span className="popup__input-error" id="title-error">Mistake</span>
-          <input className="popup__input" id="link" type="url" placeholder="Ссылка на картинку" name="link" required />
-          <span className="popup__input-error" id="link-error"></span>
-      </PopupWithForm>
-      <PopupWithForm 
-        name={"edit-avatar"}
-        title={"Обновить аватар"}
-        buttonText={"Сохранить"}
-        isOpen={isEditAvatarPopupOpen}
-        onClose={closeAllPopups}>
-          <input className="popup__input" id="avatar" type="url" placeholder="Ссылка на картинку" name="avatar" required />
-          <span className="popup__input-error" id="avatar-error"></span>
-      </PopupWithForm>
-      <ImagePopup
-        card={selectedCard}
-        onClose={closeAllPopups}
-      />
+        <PopupWithForm 
+          name={"edit-avatar"}
+          title={"Обновить аватар"}
+          buttonText={"Сохранить"}
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}>
+            <input className="popup__input" id="avatar" type="url" placeholder="Ссылка на картинку" name="avatar" required />
+            <span className="popup__input-error" id="avatar-error"></span>
+        </PopupWithForm>
+        <ImagePopup
+          card={selectedCard}
+          onClose={closeAllPopups}
+        />
+      </div>
     </div>
-  </div>
+  </CurrentUserContext.Provider>
   );
 }
 
