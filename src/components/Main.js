@@ -22,7 +22,7 @@ const Main = ({ handleEditProfileClick, handleAddPlaceClick, handleEditAvatarCli
   const handleCardDelete = (card) => {
     api.setDelete(card._id).then((res) => {
       setCards((cards) => cards.filter((c) => c._id !== card._id))
-    })
+    }).catch((err) => console.log(err));
   }
 
 //!

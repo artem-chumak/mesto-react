@@ -19,15 +19,22 @@ import '../index.css';
 function App() {
 
 //! 
-const [currentUser, setcurrentUser] = useState({});
+const [currentUser, setCurrentUser] = useState({name: '', about: '', id_: ''});
 
 useEffect(() => {
   api.getUserInfo().then((res) => {
-    setcurrentUser(res);
+    setCurrentUser(res);
   }).catch((err) => {
     console.log(err)
   })
 }, [])
+
+const handleUpdateUser = (data) => {
+  api.setUserInfo(data).then((res) => {
+    setCurrentUser(res);
+  }).catch((err) => console.log(err))
+  .finally(()=> closeAllPopups());
+}
 
 //!
 
@@ -76,7 +83,7 @@ useEffect(() => {
           handleCardClick={handleCardClick}
         />
         <Footer />
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
         <PopupWithForm 
           name={"add-place"}
           title={"Новое место"}

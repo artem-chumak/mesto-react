@@ -4,10 +4,10 @@ import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 
-const EditProfilePopup = ({ isOpen, onClose}) => {
+const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
   const currentUser = React.useContext(CurrentUserContext);
-  const [name, setName] = useState('45');
-  const [description, setDescription] = useState('45');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
 
   const handleChangeName = (e) => {
     setName(e.target.value);
@@ -17,13 +17,18 @@ const EditProfilePopup = ({ isOpen, onClose}) => {
     setDescription(e.target.value);
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onUpdateUser({
+      name: name,
+      about: description,
+    });
+  }
+
   useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
   }, [currentUser]); 
-
-  console.log(name);
-  console.log(description);
 
   return (
     <PopupWithForm 
@@ -31,7 +36,8 @@ const EditProfilePopup = ({ isOpen, onClose}) => {
     title={"Редактировать профиль"}
     buttonText={"Сохранить"}
     isOpen={isOpen}
-    onClose={onClose}>
+    onClose={onClose}
+    onSubmit={handleSubmit}>
       <input onChange={handleChangeName} value={name} className="popup__input" id="name" type="text" placeholder="Имя" name="name" required minLength="2" maxLength="40" />
       <span className="popup__input-error" id="name-error">Mistake</span>
       <input onChange={handleChangeDescription} value={description} className="popup__input" id="occupation" type="text" placeholder="Род занятий" name="about" required minLength="2" maxLength="200" />
