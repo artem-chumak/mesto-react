@@ -11,15 +11,38 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext'
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import PopupWithForm from './PopupWithForm';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
+import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
 import '../index.css';
 
 function App() {
+ 
+// cards
+const [cards, setCards] = useState([]);
 
-//! 
+// CARDS
+useEffect (() => {
+  api.getCards().then((res) => {
+    setCards(res);
+  }).catch((err) => console.log(err))
+}, [])
+
+const handleCardLike = (card) => {
+  const isLiked = card.likes.some( i=> i._id === currentUser._id);
+  api.changeLikeCardStatus(card._id, isLiked).then((newCard) => {
+    setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c))
+  }).catch((err) => console.log(err));
+}
+
+const handleCardDelete = (card) => {
+  api.setDelete(card._id).then((res) => {
+    setCards((cards) => cards.filter((c) => c._id !== card._id))
+  }).catch((err) => console.log(err));
+}
+
+
 const [currentUser, setCurrentUser] = useState({name: '', about: '', id_: ''});
 
 useEffect(() => {
@@ -42,7 +65,12 @@ const handleUpdateAvatar = (data) => {
   .finally(() => closeAllPopups());
 }
 
-//!
+const handleAddPlaceSubmit = (data) => {
+  api.setCard(data).then((res) => {
+    setCards([res, ...cards]);
+  }).catch((err) => console.log(err))
+  .finally(() => closeAllPopups());
+}
 
 // card clicked
   const [selectedCard, setSelectedCard] = useState({name:'', link:''})
@@ -87,24 +115,15 @@ const handleUpdateAvatar = (data) => {
           handleAddPlaceClick={onAddPlace}
           handleEditAvatarClick={onEditAvatar}
           handleCardClick={handleCardClick}
+          cards={cards}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
         />
         <Footer />
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-        <PopupWithForm 
-          name={"add-place"}
-          title={"Новое место"}
-          buttonText={"Сохранить"}
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}>
-            <input className="popup__input" id="title" type="text" placeholder="Название" name="name" required minLength="2" maxLength="30" />
-            <span className="popup__input-error" id="title-error">Mistake</span>
-            <input className="popup__input" id="link" type="url" placeholder="Ссылка на картинку" name="link" required />
-            <span className="popup__input-error" id="link-error"></span>
-        </PopupWithForm>
+        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-        <ImagePopup
-          card={selectedCard}
-          onClose={closeAllPopups}
+        <ImagePopup card={selectedCard} onClose={closeAllPopups}
         />
       </div>
     </div>
