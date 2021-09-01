@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
   "homepage": "http://artem-chumak.github.io/mesto-react",
-=======
-  "homepage": "https://artem-chumak.github.io/mesto-react",
->>>>>>> 79ac856a30a13a1f2c9bce2e22d8891cc4ba3139
   "name": "mesto-react",
   "version": "0.1.0",
   "private": true,
