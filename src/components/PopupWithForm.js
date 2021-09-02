@@ -6,7 +6,7 @@ const PopupWithForm = ({
   children,
   onClose,
   onSubmit,
-  onCloseOverlay
+  onCloseOverlay,
 }) => {
 
   return (

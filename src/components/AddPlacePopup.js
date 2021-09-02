@@ -1,7 +1,7 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm";
 
-const AddPlacePopup = ({ isOpen, onClose, onAddPlace, onCloseOverlay }) => {
+const AddPlacePopup = ({ isOpen, onClose, onAddPlace, onCloseOverlay, isLoading }) => {
   const nameRef = React.useRef();
   const linkRef = React.useRef();
 
@@ -17,7 +17,7 @@ const AddPlacePopup = ({ isOpen, onClose, onAddPlace, onCloseOverlay }) => {
     <PopupWithForm
       name={"add-place"}
       title={"Новое место"}
-      buttonText={"Сохранить"}
+      buttonText={ isLoading ? "Сохранение..." : "Сохранить"}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}

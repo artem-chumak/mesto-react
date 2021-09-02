@@ -3,9 +3,10 @@
 // todo 2. Почистить variables.js
 // todo 3. Добавить спинер
 // todo 4. Поменять фавикон
+//! неудача фавик не поменялся.
 // todo 5. Понять в какой момент вешается обработчик на Escap. Не до конца понимаю пока
 // todo 6. Валидация форм
-// todo 7. Надпись загрузка на кнопке
+///// todo 7. Надпись загрузка на кнопке
 ///// todo 8. Закрытие по нажатию на оверлей
 // ? Можно ли поменять клик оверлея из функции на useEffect или как-то еще.
 // ? Можно ли передать функцию напрямую в Попап с формой без вызова в рендере.
@@ -36,6 +37,7 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({ name: "", link: "" });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     api
@@ -59,7 +61,6 @@ function App() {
   }, []);
 
   //!
-  //? mb useEffect
   const closeByOverlayClick = (evt) => {
     if (evt.target === evt.currentTarget) {
       closeAllPopups();
@@ -112,33 +113,45 @@ function App() {
   };
 
   const handleUpdateUser = (data) => {
+    setIsLoading(true);
     api
       .setUserInfo(data)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setIsLoading(false)
+      })
   };
 
   const handleUpdateAvatar = (data) => {
+    setIsLoading(true);
     api
       .setAvatar(data)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setIsLoading(false)
+      });
   };
 
   const handleAddPlaceSubmit = (data) => {
+    setIsLoading(true)
     api
       .setCard(data)
       .then((res) => {
         setCards([res, ...cards]);
         closeAllPopups();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setIsLoading(false)
+      });
   };
 
   return (
@@ -158,18 +171,21 @@ function App() {
           <Footer />
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
+            isLoading={isLoading}
             onClose={closeAllPopups}
             onUpdateUser={handleUpdateUser}
             onCloseOverlay={closeByOverlayClick}
           />
           <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
+            isLoading={isLoading}
             onClose={closeAllPopups}
             onAddPlace={handleAddPlaceSubmit}
             onCloseOverlay={closeByOverlayClick}
           />
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
+            isLoading={isLoading}
             onClose={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar}
             onCloseOverlay={closeByOverlayClick}
