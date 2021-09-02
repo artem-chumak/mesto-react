@@ -12,6 +12,7 @@
 // todo 9. Окно удаления карточки
 // todo 10. Очистка форм после сабмита
 // todo 11. Прописать пути Router для сайта. Страница 404.
+// todo 12. Настроить ключ, чтобы не вводить пороль каждый раз
 
 import { useState, useEffect } from "react";
 import { api } from "../utils/Api";
