@@ -6,9 +6,11 @@ const PopupWithForm = ({
   children,
   onClose,
   onSubmit,
+  onCloseOverlay
 }) => {
+
   return (
-    <section
+    <section onClick={onCloseOverlay}
       className={
         isOpen
           ? "popup popup_type_input popup_opened"

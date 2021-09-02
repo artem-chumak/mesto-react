@@ -1,6 +1,7 @@
-const ImagePopup = ({ card, onClose }) => {
+const ImagePopup = ({ card, onClose, onCloseOverlay }) => {
   return (
     <section
+      onClick={onCloseOverlay}
       className={
         card.link
           ? "popup popup_type_image popup_opened"

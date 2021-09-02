@@ -6,9 +6,12 @@
 // todo 5. Понять в какой момент вешается обработчик на Escap. Не до конца понимаю пока
 // todo 6. Валидация форм
 // todo 7. Надпись загрузка на кнопке
-// todo 8. Закрытие по нажатию на оверлей
+///// todo 8. Закрытие по нажатию на оверлей
+// ? Можно ли поменять клик оверлея из функции на useEffect или как-то еще.
+// ? Можно ли передать функцию напрямую в Попап с формой без вызова в рендере.
 // todo 9. Окно удаления карточки
 // todo 10. Очистка форм после сабмита
+// todo 11. Прописать пути Router для сайта. Страница 404.
 
 import { useState, useEffect } from "react";
 import { api } from "../utils/Api";
@@ -53,6 +56,15 @@ function App() {
     document.addEventListener("keydown", closeByEscape);
     return () => document.removeEventListener("keydown", closeByEscape);
   }, []);
+
+  //!
+  //? mb useEffect
+  const closeByOverlayClick = (evt) => {
+    if (evt.target === evt.currentTarget) {
+      closeAllPopups();
+    }
+  };
+  //!
 
   // Card
   const handleCardLike = (card) => {
@@ -147,18 +159,25 @@ function App() {
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
             onUpdateUser={handleUpdateUser}
+            onCloseOverlay={closeByOverlayClick}
           />
           <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
             onAddPlace={handleAddPlaceSubmit}
+            onCloseOverlay={closeByOverlayClick}
           />
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar}
+            onCloseOverlay={closeByOverlayClick}
           />
-          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+          <ImagePopup
+            card={selectedCard}
+            onClose={closeAllPopups}
+            onCloseOverlay={closeByOverlayClick}
+          />
         </div>
       </div>
     </CurrentUserContext.Provider>
