@@ -17,7 +17,7 @@
    <img src="https://img.icons8.com/color/36/000000/html-5--v1.png"/>  
    CSS. flex, grid, @media.  
    <img src="https://img.icons8.com/color/36/000000/css3.png"/>  
-   React. hooks(useState, useEffect, useRef), context, api, fetch  
+   React. hooks(useState, useEffect, useRef), context, api, fetch.  
    <img src="https://img.icons8.com/office/32/000000/react.png"/>  
    BEM nested.  
    <img src="https://img.icons8.com/fluency/36/000000/plugin.png"/>  
