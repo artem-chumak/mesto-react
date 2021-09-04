@@ -17,10 +17,8 @@
    <img src="https://img.icons8.com/color/36/000000/html-5--v1.png"/>  
    CSS. flex, grid, @media.  
    <img src="https://img.icons8.com/color/36/000000/css3.png"/>  
-   JavaScript. ООП, classes, fetch, promises, api.  
-   <img src="https://img.icons8.com/color/36/000000/javascript--v2.png"/>  
-   Webpack. Настройка обработки HTML, CSS, images, fonts. Babel.  
-   <img src="https://img.icons8.com/color/36/000000/webpack.png"/> <img src="https://img.icons8.com/dusk/32/000000/babel.png"/>  
+   React. hooks(useState, useEffect, useRef), context, api, fetch  
+   <img src="https://img.icons8.com/office/32/000000/react.png"/>  
    BEM nested.  
    <img src="https://img.icons8.com/fluency/36/000000/plugin.png"/>  
    Figma.  
@@ -39,6 +37,7 @@
 - Есть счётчик лайков.
 - Карточки, которые добавил пользователь, можно удалить.
 - Перед удалением появляется окно подтверждения.
+- Индикатор сохранения и удаления карточек (leader).
 - Карточки других пользователей удалять нельзя.  
 
 ---
