@@ -1,15 +1,6 @@
-//* Спасибо за классные комментарии! Код стал лучше)
-// todo 1. Можно убрать лишнюю обёртку root и перенести стили в page.css или на root в index.html
-// todo 2. Почистить variables.js
-// todo 3. Добавить спинер
+// todo 3. Добавить спинер на первую загрузку
 // todo 4. Поменять фавикон
-//! неудача фавик не поменялся.
-// todo 5. Понять в какой момент вешается обработчик на Escap. Не до конца понимаю пока
 // todo 6. Валидация форм
-///// todo 7. Надпись загрузка на кнопке
-///// todo 8. Закрытие по нажатию на оверлей
-// ? Можно ли поменять клик оверлея из функции на useEffect или как-то еще.
-// ? Можно ли передать функцию напрямую в Попап с формой без вызова в рендере.
 // todo 9. Окно удаления карточки
 // todo 10. Очистка форм после сабмита
 // todo 11. Прописать пути Router для сайта. Страница 404.
@@ -60,13 +51,11 @@ function App() {
     return () => document.removeEventListener("keydown", closeByEscape);
   }, []);
 
-  //!
   const closeByOverlayClick = (evt) => {
     if (evt.target === evt.currentTarget) {
       closeAllPopups();
     }
   };
-  //!
 
   // Card
   const handleCardLike = (card) => {
@@ -122,8 +111,8 @@ function App() {
       })
       .catch((err) => console.log(err))
       .finally(() => {
-        setIsLoading(false)
-      })
+        setIsLoading(false);
+      });
   };
 
   const handleUpdateAvatar = (data) => {
@@ -136,12 +125,12 @@ function App() {
       })
       .catch((err) => console.log(err))
       .finally(() => {
-        setIsLoading(false)
+        setIsLoading(false);
       });
   };
 
   const handleAddPlaceSubmit = (data) => {
-    setIsLoading(true)
+    setIsLoading(true);
     api
       .setCard(data)
       .then((res) => {
@@ -150,52 +139,50 @@ function App() {
       })
       .catch((err) => console.log(err))
       .finally(() => {
-        setIsLoading(false)
+        setIsLoading(false);
       });
   };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="root">
-        <div className="page">
-          <Header />
-          <Main
-            handleEditProfileClick={onEditProfile}
-            handleAddPlaceClick={onAddPlace}
-            handleEditAvatarClick={onEditAvatar}
-            handleCardClick={handleCardClick}
-            cards={cards}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-          />
-          <Footer />
-          <EditProfilePopup
-            isOpen={isEditProfilePopupOpen}
-            isLoading={isLoading}
-            onClose={closeAllPopups}
-            onUpdateUser={handleUpdateUser}
-            onCloseOverlay={closeByOverlayClick}
-          />
-          <AddPlacePopup
-            isOpen={isAddPlacePopupOpen}
-            isLoading={isLoading}
-            onClose={closeAllPopups}
-            onAddPlace={handleAddPlaceSubmit}
-            onCloseOverlay={closeByOverlayClick}
-          />
-          <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
-            isLoading={isLoading}
-            onClose={closeAllPopups}
-            onUpdateAvatar={handleUpdateAvatar}
-            onCloseOverlay={closeByOverlayClick}
-          />
-          <ImagePopup
-            card={selectedCard}
-            onClose={closeAllPopups}
-            onCloseOverlay={closeByOverlayClick}
-          />
-        </div>
+      <div className="page">
+        <Header />
+        <Main
+          handleEditProfileClick={onEditProfile}
+          handleAddPlaceClick={onAddPlace}
+          handleEditAvatarClick={onEditAvatar}
+          handleCardClick={handleCardClick}
+          cards={cards}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
+        />
+        <Footer />
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          isLoading={isLoading}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+          onCloseOverlay={closeByOverlayClick}
+        />
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          isLoading={isLoading}
+          onClose={closeAllPopups}
+          onAddPlace={handleAddPlaceSubmit}
+          onCloseOverlay={closeByOverlayClick}
+        />
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          isLoading={isLoading}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+          onCloseOverlay={closeByOverlayClick}
+        />
+        <ImagePopup
+          card={selectedCard}
+          onClose={closeAllPopups}
+          onCloseOverlay={closeByOverlayClick}
+        />
       </div>
     </CurrentUserContext.Provider>
   );
