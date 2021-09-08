@@ -1,10 +1,12 @@
-// todo 3. Добавить спинер на первую загрузку
-// todo 4. Поменять фавикон
-// todo 6. Валидация форм
-// todo 9. Окно удаления карточки
-// todo 10. Очистка форм после сабмита
-// todo 11. Прописать пути Router для сайта. Страница 404.
-// todo 12. Настроить ключ, чтобы не вводить пороль каждый раз
+// todo 1. Добавить спинер на первую загрузку
+// todo 2. Поменять фавикон
+// todo 3. Валидация форм
+///// todo 4. Окно удаления карточки
+// todo 5. Очистка форм после сабмита
+// todo 6. Прописать пути Router для сайта. Страница 404.
+// todo 7. Поменять экспорты. Убрать дефолтные.
+// todo 8. Настроить ключ, чтобы не вводить пороль каждый раз ssh.
+// todo 9. Сделать автоматическое форматирование кода.
 
 import { useState, useEffect } from "react";
 import { api } from "../utils/Api";
@@ -16,6 +18,7 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup";
+import DeleteConfirmPopup from "./DeleteConfirmPopup";
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -28,6 +31,7 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({ name: "", link: "" });
+  const [deletedCard, setDeletedCard] = useState({ name: "", link: "" });
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -71,16 +75,25 @@ function App() {
   };
 
   const handleCardDelete = (card) => {
+    setIsLoading(true);
     api
       .setDelete(card._id)
       .then((res) => {
         setCards((cards) => cards.filter((c) => c._id !== card._id));
+        closeAllPopups();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const handleCardClick = (card) => {
     setSelectedCard(card);
+  };
+
+  const handleCardDeleteClick = (card) => {
+    setDeletedCard(card);
   };
 
   // Popups
@@ -99,6 +112,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setSelectedCard({ name: "", link: "" });
+    setDeletedCard({ name: "", link: "" });
   };
 
   const handleUpdateUser = (data) => {
@@ -152,9 +166,10 @@ function App() {
           handleAddPlaceClick={onAddPlace}
           handleEditAvatarClick={onEditAvatar}
           handleCardClick={handleCardClick}
+          handleCardDeleteClick={handleCardDeleteClick}
           cards={cards}
           onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
+          // onCardDelete={handleCardDelete}
         />
         <Footer />
         <EditProfilePopup
@@ -182,6 +197,13 @@ function App() {
           card={selectedCard}
           onClose={closeAllPopups}
           onCloseOverlay={closeByOverlayClick}
+        />
+        <DeleteConfirmPopup
+          card={deletedCard}
+          onClose={closeAllPopups}
+          onCloseOverlay={closeByOverlayClick}
+          onCardDelete={handleCardDelete}
+          isLoading={isLoading}
         />
       </div>
     </CurrentUserContext.Provider>

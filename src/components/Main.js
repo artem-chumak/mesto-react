@@ -7,9 +7,9 @@ const Main = ({
   handleAddPlaceClick,
   handleEditAvatarClick,
   handleCardClick,
+  handleCardDeleteClick,
   cards,
   onCardLike,
-  onCardDelete,
 }) => {
   const currentUser = React.useContext(CurrentUserContext);
 
@@ -47,7 +47,7 @@ const Main = ({
                 card={card}
                 onCardClick={handleCardClick}
                 onCardLike={onCardLike}
-                onCardDelete={onCardDelete}
+                onCardDeleteClick={handleCardDeleteClick}
               />
             );
           })}
